@@ -10,7 +10,6 @@ import os
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 
 # app.config['SECRET_KEY'] = '2ae76b45748f51c2d730af17b02d2d79fd43c200b8d7dd48a5ef9c67152891bc'
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
