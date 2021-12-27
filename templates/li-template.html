@@ -1,0 +1,39 @@
+<li class="list-group-item myli list-group-item-action {%if data.complete%}completed{%endif%}" value="{{data.task_id}}" priority="{{data.task_priority}}">
+  <div id="task-{{data.task_id}}">
+
+    <!-- Drag Icon -->
+    <i class="fas fa-grip-vertical handle hide-icons icon" value=""></i>
+    <!-- <input type="text" name="task_priority" value="{{data.task_id}}-{{data.task_priority}}"> -->
+
+    <!-- checkbox -->
+    <i class="checkbox " style="color: {{data.color}};"></i>
+
+    <!-- Task Data -->
+    <span class="{%if not data.complete%}editable{%endif%} h2 ">{{data.data}}</span>
+    <!-- Date Element -->
+    <span class="datepicker" data-provide="datepicker" data-date-format="dd/mm/yyyy"  data-date-clear-btn="true" data-date-autoclose="true">
+      {% if data.date is not none %} <span class="date-display badge rounded-pill bg-secondary"><span class="date">{{data.date.strftime('%d/%m/%Y')}}   </span></span>
+      {%else%} <i class="fas fa-calendar-day icon hide-icons"></i>
+       {% endif %}
+    </span>
+
+    <input type="hidden" name="hiddenField" class="form-control form-control-lg" />
+
+    <!-- Icons for actions on task -->
+    <span class="float-end task-utilities">
+      <!-- Star Task -->
+      <i class="fas fa-star icon hide-icons {%if data.starred%}starred{%endif%}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Star Task"></i>
+      <input type="hidden" name="starred" value={{data.starred}}>
+      <!-- PopOver Color Picker-->
+      <span data-bs-toggle="popover" class="hide-icons icon" data-bs-placement="left" data-bs-container="#task-{{data.task_id}}">
+        <i class="fas fa-tag" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Choose Color"></i>
+      </span>
+      <input type="hidden" name="color" value={{data.color}}>
+      <!-- Remove Task Icon -->
+      <i class="fas fa-trash-alt icon hide-icons " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove Task"></i>
+
+    </span>
+
+  </div>
+
+</li>

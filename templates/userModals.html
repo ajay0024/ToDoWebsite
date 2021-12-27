@@ -1,0 +1,40 @@
+<!-- Sharing Modal -->
+<div class="modal fade" id="sharingModal" tabindex="-1" role="dialog" aria-labelledby="sharingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Share below link to share the list with others</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" value="Temporary" disabled >
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="tooltip" title="Copy Link"><i class="far fa-copy"></i></button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete Tasklist Modal -->
+<div class="modal fade" id="deleteTasklistModal" tabindex="-1" role="dialog" aria-labelledby="deleteTasklistModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deleting Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the list <span class="name fw-bolder"></span></p>
+
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-danger" id="delete-tasklist">Delete</a>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<!-- Display Tasklist Header -->
+<div class="tab-pane fade tasklist-tab {{'active show' if singleEntryPage}}" id={{'t'+tasklist.uid}} role="tabpanel" tasklist_id={{tasklist.uid}} aria-labelledby={{tasklist.uid}}>
+  <div class="p-3 my-2 bg-info rounded text-white container-fluid">
+    <div class="row">
+      <div class="col-lg-8 ">
+        <h2 class="name-editable align-middle">{{tasklist.name}}</h2>
+      </div>
+      <div class="col align-items-center d-flex ">
+          <button type="button" class="btn btn-dark mx-1" name="button" data-bs-toggle="modal" data-bs-target="#sharingModal" data-bs-link={{tasklist.uid}}><i class="fas fa-share-alt"></i> Share List</button>
+          <button type="button" class="btn btn-dark mx-1" name="button" data-bs-toggle="modal" data-bs-target="#deleteTasklistModal" data-bs-uid={{tasklist.uid}}><i class="fas fa-trash-alt"></i> Delete List</button>
+
+      </div>
+
+    </div>
+
+  </div>
+  <!--    New Task-->
+  <div class="my-3 list-group-flush">
+    <input autofocus="autofocus" class="form-control form-control-lg" autocomplete="off" placeholder="Write new task here..." required="required" type="text" value="" name="new_task_data" id="task_description" data-bs-toggle="tooltip" title=""
+      data-bs-placement="bottom">
+    {%if tasklist.tasks|length >0:%}
+    {%set highest_priority=tasklist.tasks[0].task_priority%}
+    {%else:%}
+    {%set highest_priority=0%}
+    {% endif %}
+    <input type="hidden" name="highest_priority" value="{{highest_priority}}">
+    <input type="hidden" name="tasklist_id" id="tasklist_id" value="{{tasklist.uid}}">
+  </div>
+  <ul class="list-group list-group-flush tasklist-ul" id={{'t'+tasklist.uid}}>
+    {% for data in tasklist.tasks%}
+    {% include 'li-template.html' %}
+    {%endfor%}
+  </ul>
+
+</div>

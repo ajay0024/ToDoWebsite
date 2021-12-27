@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{{super()}}
+<div class="container-fluid">
+  <div class="row">
+    <!-- List of Tasklist Column -->
+    <div class="col-md-3 mt-2">
+      <ul class="list-group list-group-flush rounded">
+        {% for i in range(10):%}
+        <!-- <a  href="#" class="list-group-item tasklist-list text-white">ABC</a> -->
+        <a  href="#" class="list-group-item list-group-item-action list-group-item-info">ABC</a>
+        <!-- <li class="list-group-item">DEF</li> -->
+        {% endfor%}
+        <a  href="#" class="list-group-item list-group-item-action list-group-item-info active">ABC</a>
+
+      </ul>
+    </div>
+
+    <!-- Displaying Tasklist  -->
+    <div class="col-md-9">
+      <!-- Display Tasklist Header -->
+      <div class="p-3 my-2 bg-primary rounded text-white">
+        <h3>List-Name</h3>
+      </div>
+      <!--    New Task-->
+      <div class="list-group-item list-group-flush">
+        <input autofocus="autofocus" class="form-control form-control-lg" autocomplete="off" placeholder="Write new task here..." required="required" type="text" value="" name="new_task_data" id="task_description" data-bs-toggle="tooltip" title=""
+          data-bs-placement="bottom">
+        <input type="hidden" name="" id="highest_priority" value="{{highest_priority}}">
+        <input type="hidden" name="" id="tasklist_id" value="{{tasklist_id}}">
+      </div>
+      <ul class="list-group list-group-flush" id="tasklist">
+        {% for data in tasks%}
+        {% include 'li-template.html' %}
+        {%endfor%}
+      </ul>
+
+      <!-- HTML Code for color picker popover -->
+      <div class="popover-html" style="display:none;">
+        <i class="fas fa-circle color-selector" style="color:#9AE66E; "></i>
+        <i class="fas fa-circle color-selector" style="color:#FFAB4C; "></i>
+        <i class="fas fa-circle color-selector" style="color:#142F43; "></i>
+        <i class="fas fa-circle color-selector" style="color:#FF5F7E; "></i>
+        <i class="fas fa-circle color-selector" style="color:#B000B9; "></i>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+{{super()}}
+<div class="container-fluid">
+  <div class="row">
+    <!-- List of Tasklist Column -->
+    {%set singleEntryPage=true if tasklist%}
+    {%if not singleEntryPage:%}
+    <div class="col-md-3 mt-2" role="tabpanel">
+      <div class="list-group list-group-flush rounded" id="tasklists_list" role="tablist">
+        {% for x in current_user.tasklists:%}
+        <!-- <a  href="#" class="list-group-item tasklist-list text-white">ABC</a> -->
+
+        <a href={{'#t'+x.uid}} data-bs-toggle="tab" class="list-group-item list-group-item-action list-group-item-info tasklist-item" tasklist_uid={{x.uid}}><i class="fas fa-grip-vertical handle"></i> <span>{{x.name}}</span>
+          <span class="float-end badge rounded-pill bg-info">{{x.tasks|length-x.tasks|selectattr("complete")|list|length}}</span>
+        </a>
+        <!-- <li class="list-group-item">DEF</li> -->
+        {% endfor%}
+        <!-- <a href="#" class="list-group-item list-group-item-action list-group-item-info active">ABC</a> -->
+
+      </div>
+    </div>
+    {%endif%}
+
+    <!-- Displaying Tasklist  -->
+
+    <div class="col">
+      <div class="tab-content" id="nav-tabContent">
+        {%if not singleEntryPage:%}
+        {% for tasklist in current_user.tasklists:%}
+        {% include 'tasklist-template.html' %}
+        {% endfor %}
+        {% else %}
+        {% include 'tasklist-template.html' %}
+        {% endif %}
+      </div>
+      <!-- HTML Code for color picker popover -->
+      <div class="popover-html" style="display:none;">
+        <i class="fas fa-circle color-selector" style="color:#9AE66E; "></i>
+        <i class="fas fa-circle color-selector" style="color:#FFAB4C; "></i>
+        <i class="fas fa-circle color-selector" style="color:#142F43; "></i>
+        <i class="fas fa-circle color-selector" style="color:#FF5F7E; "></i>
+        <i class="fas fa-circle color-selector" style="color:#B000B9; "></i>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
