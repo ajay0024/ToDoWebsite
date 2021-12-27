@@ -6,12 +6,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from sqlalchemy.orm import relationship
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+
+# app.config['SECRET_KEY'] = '2ae76b45748f51c2d730af17b02d2d79fd43c200b8d7dd48a5ef9c67152891bc'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+
+uri = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = '2ae76b45748f51c2d730af17b02d2d79fd43c200b8d7dd48a5ef9c67152891bc'
+
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
