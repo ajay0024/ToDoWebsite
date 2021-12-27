@@ -14,7 +14,7 @@ app = Flask(__name__)
 # app.config['SECRET_KEY'] = '2ae76b45748f51c2d730af17b02d2d79fd43c200b8d7dd48a5ef9c67152891bc'
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
-uri = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")  # or other relevant config var
+uri = os.environ.get("DATABASE_URL",  "sqlite:///tasks.db")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
@@ -108,10 +108,10 @@ def login():
         # Email doesn't exist or password incorrect.
         if not user:
             flash("That email does not exist, please try again.")
-            return redirect(url_for('login11'))
+            return redirect(url_for('home'))
         elif not check_password_hash(user.password, password):
             flash('Password incorrect, please try again.')
-            return redirect(url_for('login11'))
+            return redirect(url_for('home'))
         else:
             login_user(user)
             return redirect(url_for("home"))
@@ -145,7 +145,7 @@ def home():
 def new():
     code = str(uuid.uuid4())
     if current_user.is_authenticated:
-        max_priority = max(x.tasklist_priority for x in current_user.tasklists)
+        max_priority = max((x.tasklist_priority for x in current_user.tasklists), default=0)
         tasklist = TaskList(uid=code, name="New List", author_id=current_user.id, tasklist_priority=max_priority + 1)
     else:
         tasklist = TaskList(uid=code, name="New List", tasklist_priority=0)
