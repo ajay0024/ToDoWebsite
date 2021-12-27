@@ -1,5 +1,14 @@
 var popoverSettings
 $(document).ready(function(dateOptions) {
+  // Load modals on errors
+  var error = GetURLParameter("error");
+  if (error == "login") {
+    new bootstrap.Modal($("#loginModal")).show()
+  } else if (error == "registration") {
+    new bootstrap.Modal($("#registrationModal")).show()
+  }
+
+  // Set popover content and settings
   popoverContent = $(".popover-html").html();
   popoverSettings = {
     content: popoverContent,
@@ -19,6 +28,18 @@ $(document).ready(function(dateOptions) {
   tasklist_functions();
 
 });
+
+
+function GetURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+}
 
 function make_sortables() {
   let tasklistElems = $(".tasklist-ul");
@@ -339,8 +360,8 @@ function task_functions() {
 
 
 }
-function tasklist_functions()
-{
+
+function tasklist_functions() {
   // Sharing Modals scripts
   $("body").on('show.bs.modal', "#sharingModal", function(event) {
     // Button that triggered the modal

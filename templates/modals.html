@@ -41,7 +41,7 @@
 </div>
 
 <!-- Registration Modal -->
-<div class="modal fade" id="registerationModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form class="" action="{{url_for('register')}}" method="post">
@@ -53,6 +53,15 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
             {{ registrationForm.csrf_token }}
             <label for="exampleInputEmail1" class="form-label">{{registrationForm.email.label}}</label>
             {{registrationForm.email(class="form-control")}}

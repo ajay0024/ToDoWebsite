@@ -75,8 +75,8 @@ def register():
         if User.query.filter_by(email=form.email.data).first():
             print(User.query.filter_by(email=form.email.data).first())
             # User already exists
-            flash("You've already signed up with that email, log in instead!")
-            return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data))
+            flash("You've already signed up with that email, log in instead or use a different email to register.")
+            return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data, error="registration"))
 
         hash_and_salted_password = generate_password_hash(
             form.password.data,
@@ -93,7 +93,7 @@ def register():
         login_user(new_user)
         return redirect(url_for("home", tasklist_id=form.tasklist_id.data))
     print(form.errors)
-    return render_template("register.html", form=form, current_user=current_user)
+    return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data, error="registration"))
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -103,20 +103,19 @@ def login():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        print("valid")
         user = User.query.filter_by(email=email).first()
         # Email doesn't exist or password incorrect.
         if not user:
-            flash("That email does not exist, please try again.")
-            return redirect(url_for('home'))
+            flash("That email does not exist in our database, please try again or register.")
+            return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data, error="login"))
         elif not check_password_hash(user.password, password):
             flash('Password incorrect, please try again.')
-            return redirect(url_for('home'))
+            return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data, error="login"))
         else:
             login_user(user)
             return redirect(url_for("home"))
     print(form.errors)
-    return render_template("login.html", form=form, current_user=current_user)
+    return redirect(url_for("task_list", tasklist_id=form.tasklist_id.data, error="login"))
 
 
 @app.route('/logout')
@@ -162,6 +161,7 @@ def new():
 def task_list(tasklist_id):
     tasklist = TaskList.query.get(tasklist_id)
     tasklist.tasks.sort(key=lambda x: x.task_priority, reverse=True)
+
     return render_template("user-view.html", tasklist=tasklist, registrationForm=RegisterForm(), loginForm=LoginForm())
 
 
