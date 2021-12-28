@@ -2,13 +2,13 @@
 <div class="tab-pane fade tasklist-tab {{'active show' if singleEntryPage}}" id={{'t'+tasklist.uid}} role="tabpanel" tasklist_id={{tasklist.uid}} aria-labelledby={{tasklist.uid}}>
   <div class="p-3 my-2 bg-info rounded text-white container-fluid">
     <div class="row">
-      <div class="col-lg-8 ">
+      <div class="col-lg-6 ">
         <h2 class="name-editable align-middle">{{tasklist.name}}</h2>
       </div>
       <div class="col align-items-center d-flex ">
           <button type="button" class="btn btn-dark mx-1" name="button" data-bs-toggle="modal" data-bs-target="#sharingModal" data-bs-link={{tasklist.uid}}><i class="fas fa-share-alt"></i> Share List</button>
           <button type="button" class="btn btn-dark mx-1" name="button" data-bs-toggle="modal" data-bs-target="#deleteTasklistModal" data-bs-uid={{tasklist.uid}}><i class="fas fa-trash-alt"></i> Delete List</button>
-
+          <a type="button" class="btn btn-dark mx-1" id="cloneList" href={{url_for('clone',tasklist_id=tasklist.uid)}}><i class="fas fa-clone"></i> Clone List</a>
       </div>
 
     </div>

@@ -6,15 +6,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from sqlalchemy.orm import relationship
 from datetime import datetime
-import os
+import os, copy
 
 app = Flask(__name__)
-
 
 # app.config['SECRET_KEY'] = '2ae76b45748f51c2d730af17b02d2d79fd43c200b8d7dd48a5ef9c67152891bc'
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
-uri = os.environ.get("DATABASE_URL",  "sqlite:///tasks.db")  # or other relevant config var
+uri = os.environ.get("DATABASE_URL", "sqlite:///tasks.db")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
@@ -140,14 +139,19 @@ def home():
         return render_template("user-view.html", current_user=current_user)
 
 
-@app.route("/new")
-def new():
+def make_tasklist():
     code = str(uuid.uuid4())
     if current_user.is_authenticated:
         max_priority = max((x.tasklist_priority for x in current_user.tasklists), default=0)
         tasklist = TaskList(uid=code, name="New List", author_id=current_user.id, tasklist_priority=max_priority + 1)
     else:
         tasklist = TaskList(uid=code, name="New List", tasklist_priority=0)
+    return tasklist
+
+
+@app.route("/new")
+def new():
+    tasklist = make_tasklist()
     db.session.add(tasklist)
     db.session.commit()
     new_tasklist_id = tasklist.uid
@@ -161,8 +165,26 @@ def new():
 def task_list(tasklist_id):
     tasklist = TaskList.query.get(tasklist_id)
     tasklist.tasks.sort(key=lambda x: x.task_priority, reverse=True)
-
     return render_template("user-view.html", tasklist=tasklist, registrationForm=RegisterForm(), loginForm=LoginForm())
+
+
+@app.route("/clone/<tasklist_id>")
+def clone(tasklist_id):
+    tasklist = TaskList.query.get(tasklist_id)
+    new_tasklist = make_tasklist()
+    new_tasklist.name = tasklist.name
+    for x in tasklist.tasks:
+        db.session.expunge(x)
+        db.make_transient(x)
+        x.task_id=None
+        x.task_list_id=new_tasklist.uid
+        db.session.add(x)
+    db.session.add(new_tasklist)
+    db.session.commit()
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    else:
+        return redirect(url_for("task_list", tasklist_id=new_tasklist.uid))
 
 
 @app.route("/add_task", methods=["POST"])
@@ -275,7 +297,8 @@ def edit_date():
         db.session.commit()
     return "";
 
-@app.route("/delete_tasklist/<uid>", methods=["POST","GET"])
+
+@app.route("/delete_tasklist/<uid>", methods=["POST", "GET"])
 def delete_tasklist(uid):
     if request.method == 'GET':
         tasklist = TaskList.query.get(uid)
@@ -284,6 +307,7 @@ def delete_tasklist(uid):
         db.session.delete(tasklist)
         db.session.commit()
     return redirect(url_for("home"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
