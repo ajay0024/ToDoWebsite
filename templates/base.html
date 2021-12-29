@@ -46,11 +46,34 @@ To-Do
 {%endif%}
 {%include 'userModals.html'%}
 {% endblock %}
+{% block footer %}
+{{super()}}
+
+<div id="cofee-button" class="fixed-bottom my-4 ">
+  <a class="float-end " href="https://www.buymeacoffee.com/todo" target="_blank" i><img class="shadow rounded-pill" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee"
+      style="height: 60px !important;width: 217px !important;"></a>
+</div>
+
+<div class="footer">
+  <div class="d-flex nav justify-content-between pt-4 mt-4 border-top ">
+    <ul class="list-unstyled d-flex fs-3">
+      <li class="ms-3"><a class="text-muted" href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+      <li class="ms-3"><a class="text-muted" href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+      <li class="ms-3"><a class="text-muted" href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+    </ul>
+    <p>&copy; 2021 Company, Inc. All rights reserved.</p>
+    <p></p>
+  </div>
+</div>
+
+
+
+</div>
+{% endblock %}
+
 {% block scripts %}
 
-  <div id="cofee-button" class="fixed-bottom my-4 mx-2 ">
-    <a  href="https://www.buymeacoffee.com/todo" target="_blank" i><img class="shadow rounded-pill" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-  </div>
+
 
 
 
