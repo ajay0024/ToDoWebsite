@@ -172,6 +172,7 @@ function task_functions() {
   //    Adding Task When pressed Enter
   $("input[name='new_task_data']").keydown(function(event) {
     if (event.keyCode == 13) {
+      event.preventDefault();
       let inputElem = $(this);
       let tasklistDivElem = $(this).parents("div.tab-pane");
       let tasklist_id = tasklistDivElem.attr("tasklist_id")
