@@ -18,24 +18,23 @@ To-Do
       <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
         {%if not current_user.is_authenticated: %}
         <li class="nav-item">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registrationModal" ><i class="fas fa-file-invoice"></i> Register</a>
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registrationModal"><i class="fas fa-file-invoice"></i> Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" ><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-sign-in-alt"></i> Login</a>
         </li>
         {% else: %}
         <li class="nav-item">
-          <a class="nav-link" href="#" data-bs-toggle="modal"  ><i class="fas fa-user-circle"></i> {{current_user.email}}</a>
+          <a class="nav-link" href="#" data-bs-toggle="modal"><i class="fas fa-user-circle"></i> {{current_user.email}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('logout')}}" ><i class="fas fa-sign-out-alt"></i> Logout</a>
+          <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </li>
         {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{url_for('new')}}"><i class="fa fa-plus"></i> New List </a>
         </li>
       </ul>
-
     </div>
   </div>
 </nav>
@@ -49,9 +48,16 @@ To-Do
 {% endblock %}
 {% block scripts %}
 
+  <div id="cofee-button" class="fixed-bottom my-4 mx-2 ">
+    <a  href="https://www.buymeacoffee.com/todo" target="_blank" i><img class="shadow rounded-pill" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+  </div>
+
+
+
 {{super()}}
 <script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
 <script src="{{url_for('.static', filename='myscript.js')}}"></script>
+
 {% endblock %}
 
 {% block styles %}
