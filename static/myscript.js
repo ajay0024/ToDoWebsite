@@ -172,7 +172,6 @@ function task_functions() {
   //    Adding Task When pressed Enter
   $("input[name='new_task_data']").keydown(function(event) {
     if (event.keyCode == 13) {
-      event.preventDefault();
       let inputElem = $(this);
       let tasklistDivElem = $(this).parents("div.tab-pane");
       let tasklist_id = tasklistDivElem.attr("tasklist_id")
@@ -205,21 +204,18 @@ function task_functions() {
     newDate = $(this).datepicker('getFormattedDate')
     elem = ($(this))
     task_id = $(this).parents("li").val();
+    if (newDate) {
+      elem.html('<span class="date-display badge rounded-pill bg-secondary"><span class="date">' + newDate + '   </span></span>');
+    } else {
+      elem.html('<i class="fas fa-calendar-day icon hide-icons"></i>')
+    }
     $.post("edit_date", {
         "task_id": task_id,
         "date": newDate
       },
       function(data, status) {
-        if (status == "success") {
-          console.log(newDate)
-          if (newDate) {
-            elem.html('<span class="date-display badge rounded-pill bg-secondary"><span class="date">' + newDate + '   </span></span>');
-          } else {
-            elem.html('<i class="fas fa-calendar-day icon hide-icons"></i>')
-          }
-
-        } else {
-          alert("Could not star the sky")
+        if (status != "success") {
+            alert("Could not fix a date")
         }
       });
 
@@ -285,17 +281,15 @@ function task_functions() {
   // Set colors of Checkbox
   $(".tab-content").on("click", ".fa-circle", function(event) {
     task_id = $(this).parents("li").val();
-    me = $(this);
+    $(this).parent().parent().siblings('.checkbox').css({
+      "color": me.css("color")
+    })
     $.post("color_task", {
         "task_id": task_id,
         "color": $(this).css("color")
       },
       function(data, status) {
-        if (status == "success") {
-          me.parent().parent().siblings('.checkbox').css({
-            "color": me.css("color")
-          })
-        } else {
+        if (status != "success") {
           alert("Could not color the sky")
         }
       });
@@ -305,14 +299,13 @@ function task_functions() {
   $(".tab-content").on("click", ".fa-star", function(event) {
     task_id = $(this).parents("li").val();
     me = $(this);
+    me.toggleClass("starred")
     $.post("star_task", {
         "task_id": task_id,
-        "star": !$(this).hasClass("starred")
+        "star": $(this).hasClass("starred")
       },
       function(data, status) {
-        if (status == "success") {
-          me.toggleClass("starred")
-        } else {
+        if (status != "success") {
           alert("Could not star the sky")
         }
       });
@@ -322,14 +315,13 @@ function task_functions() {
   $(".tab-content").on("click", ".fa-trash-alt", function(event) {
     liToRemove = $(this).parents("li")
     task_id = $(this).parents("li").val();
-    me = $(this);
+    liToRemove.find('[data-bs-toggle="tooltip"]').tooltip('dispose');
+    liToRemove.remove();
     $.post("delete_task", {
         "task_id": task_id
       },
       function(data, status) {
         if (status == "success") {
-          liToRemove.find('[data-bs-toggle="tooltip"]').tooltip('dispose');
-          liToRemove.remove();
           updateCurrentTaskCount(true);
         } else {
           alert("Could not Delete");
@@ -341,17 +333,15 @@ function task_functions() {
   $(".tab-content").on("click", ".checkbox", function(event) {
     liElem = $(this).parents("li");
     task_id = liElem.val();
-
+    liElem.toggleClass("completed");
+    updateCurrentTaskCount(liElem.hasClass("completed"));
     $.post("mark_complete_task", {
         "task_id": task_id,
-        "complete": !liElem.hasClass("completed")
+        "complete": liElem.hasClass("completed")
       },
       function(data, status) {
-        if (status == "success") {
-          liElem.toggleClass("completed");
-          updateCurrentTaskCount(liElem.hasClass("completed"));
-        } else {
-          alert("Could not finish my work")
+        if (status != "success") {
+              alert("Could not finish my work")
         }
       });
   });
