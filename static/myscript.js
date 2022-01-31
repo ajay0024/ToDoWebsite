@@ -282,7 +282,7 @@ function task_functions() {
   $(".tab-content").on("click", ".fa-circle", function(event) {
     task_id = $(this).parents("li").val();
     $(this).parent().parent().siblings('.checkbox').css({
-      "color": me.css("color")
+      "color": $(this).css("color")
     })
     $.post("color_task", {
         "task_id": task_id,
